@@ -13,32 +13,39 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
+    
     - name: Set up Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install pnpm globally
-      run: |
-        npm install -g pnpm
-        pnpm --version  # Verifikasi pnpm terinstall
-    - name: Cache pnpm store
-      uses: actions/cache@v4
+        cache: 'npm'
+
+    - name: Install dependencies with npm
+      run: npm ci
+
+    - name: Build project (if present)
+      run: npm run build --if-present
+
+    - name: Run tests
+      run: npm test
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4.0.0
       with:
-        path: ~/.pnpm-store
-        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-
+        # Version of pnpm to install
+        version: '7.x' # Atur versi pnpm yang diinginkan, bisa ganti sesuai keinginan
+        # File path to the package.json to read "packageManager" configuration
+        package_json_file: 'package.json'
+
     - name: Install dependencies with pnpm
       run: pnpm install --frozen-lockfile
-    - name: Check if pnpm is working correctly
-      run: pnpm --version  # Verifikasi kembali pnpm
-    - name: Build the app
-      run: |
-        pnpm build --if-present  # Pastikan build berjalan dengan baik
-    - name: Run dev command
-      run: |
-        echo "Running pnpm dev..."
-        pnpm run dev  # Periksa apakah perintah dev ada di scripts
+
+    - name: Build with pnpm
+      run: pnpm run build --if-present
+
+    - name: Run dev command with pnpm
+      run: pnpm run dev
