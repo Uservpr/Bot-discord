@@ -23,7 +23,7 @@ jobs:
     - name: Install pnpm globally
       run: |
         npm install -g pnpm
-        pnpm --version  # Pastikan pnpm terinstall dengan benar
+        pnpm --version  # Verifikasi pnpm terinstall
     - name: Cache pnpm store
       uses: actions/cache@v4
       with:
@@ -33,14 +33,12 @@ jobs:
           ${{ runner.os }}-pnpm-
     - name: Install dependencies with pnpm
       run: pnpm install --frozen-lockfile
+    - name: Check if pnpm is working correctly
+      run: pnpm --version  # Verifikasi kembali pnpm
     - name: Build the app
-      run: pnpm build --if-present
-    - name: Debugging: Check working directory and pnpm version
       run: |
-        echo "Current working directory: $(pwd)"
-        ls -la  # Cek file dan folder
-        pnpm --version  # Verifikasi pnpm sudah terinstall
+        pnpm build --if-present  # Pastikan build berjalan dengan baik
     - name: Run dev command
       run: |
         echo "Running pnpm dev..."
-        pnpm dev  # Jalankan dev server
+        pnpm run dev  # Periksa apakah perintah dev ada di scripts
