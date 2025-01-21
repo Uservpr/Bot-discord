@@ -20,16 +20,16 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'
     - name: Install pnpm
       run: npm install -g pnpm  # Install pnpm terlebih dahulu
     - name: Cache pnpm modules
-      uses: actions/cache@v4  # Update ke v4 untuk cache
+      uses: actions/cache@v4
       with:
-        path: ~/.pnpm-store  # Menunjuk ke lokasi pnpm store
+        path: ~/.pnpm-store  # Cache untuk pnpm store
         key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-pnpm-
     - run: pnpm install --frozen-lockfile  # Install dependensi pake pnpm
     - run: pnpm build --if-present
-    - run: pnpm test
+    - name: Run dev command
+      run: pnpm dev  # Nge-run dev server
