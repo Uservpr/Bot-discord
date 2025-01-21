@@ -1,0 +1,133 @@
+[
+  {
+    "name": "add-role",
+    "description": "Tambah role ke user",
+    "options": [
+      {
+        "name": "user",
+        "type": 6,
+        "description": "Tag user yang mau ditambah role",
+        "required": true
+      },
+      {
+        "name": "role",
+        "type": 8,
+        "description": "Role yang akan ditambahkan",
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "remove-role",
+    "description": "Hapus role dari user",
+    "options": [
+      {
+        "name": "user",
+        "type": 6,
+        "description": "Tag user yang mau dihapus rolenya",
+        "required": true
+      },
+      {
+        "name": "role",
+        "type": 8,
+        "description": "Role yang akan dihapus",
+        "required": true
+      }
+    ]
+  },
+  {
+    "name": "kick",
+    "description": "Kick user dari server",
+    "options": [
+      {
+        "name": "user",
+        "type": 6,
+        "description": "Tag user yang mau di-kick",
+        "required": true
+      },
+      {
+        "name": "reason",
+        "type": 3,
+        "description": "Alasan kick",
+        "required": false
+      }
+    ]
+  },
+  {
+    "name": "server-check",
+    "description": "Cek status server SAMP",
+    "options": []
+  },
+  {
+    "name": "create-event",
+    "description": "Buat event baru dengan info lengkap",
+    "options": [
+        {
+            "name": "name",
+            "description": "Nama event",
+            "type": 3,
+            "required": true
+        },
+        {
+            "name": "description",
+            "description": "Deskripsi event",
+            "type": 3,
+            "required": true
+        },
+        {
+            "name": "location",
+            "description": "Lokasi event",
+            "type": 3,
+            "required": true
+        },
+        {
+            "name": "tanggal",
+            "description": "Tanggal event (format angka, misal: 20)",
+            "type": 4,
+            "required": true
+        },
+        {
+            "name": "jam",
+            "description": "Jam event (format teks, misal: 20:00 WIB)",
+            "type": 3,
+            "required": true
+        },
+        {
+            "name": "hadiah-utama",
+            "description": "Hadiah utama event",
+            "type": 3,
+            "required": true
+        },
+        {
+            "name": "hadiah-kedua",
+            "description": "Hadiah kedua (opsional)",
+            "type": 3,
+            "required": false
+        },
+        {
+            "name": "hadiah-ketiga",
+            "description": "Hadiah ketiga (opsional)",
+            "type": 3,
+            "required": false
+        }
+    ]
+},
+  {
+    "name": "daftar-event",
+    "description": "Daftar untuk ikut event",
+    "options": [
+        {
+            "name": "nama-event",
+            "description": "Nama event yang ingin diikuti",
+            "type": 3,
+            "required": true
+        },
+        {
+            "name": "nama_ic",
+            "description": "Nama IC (in character)",
+            "type": 3,
+            "required": true
+        }
+    ]
+}
+]
