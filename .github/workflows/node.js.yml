@@ -31,5 +31,12 @@ jobs:
           ${{ runner.os }}-pnpm-
     - run: pnpm install --frozen-lockfile  # Install dependensi pake pnpm
     - run: pnpm build --if-present
+    - name: Debugging: Check working directory and pnpm version
+      run: |
+        echo "Current working directory: $(pwd)"
+        ls -la  # Cek apakah semua file ada di folder
+        pnpm --version  # Cek versi pnpm yang terinstall
     - name: Run dev command
-      run: pnpm dev  # Nge-run dev server
+      run: |
+        echo "Running pnpm dev..."
+        pnpm dev  # Nge-run dev server
