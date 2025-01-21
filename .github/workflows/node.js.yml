@@ -20,23 +20,27 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install pnpm
-      run: npm install -g pnpm  # Install pnpm terlebih dahulu
-    - name: Cache pnpm modules
+    - name: Install pnpm globally
+      run: |
+        npm install -g pnpm
+        pnpm --version  # Pastikan pnpm terinstall dengan benar
+    - name: Cache pnpm store
       uses: actions/cache@v4
       with:
-        path: ~/.pnpm-store  # Cache untuk pnpm store
+        path: ~/.pnpm-store
         key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
         restore-keys: |
           ${{ runner.os }}-pnpm-
-    - run: pnpm install --frozen-lockfile  # Install dependensi pake pnpm
-    - run: pnpm build --if-present
+    - name: Install dependencies with pnpm
+      run: pnpm install --frozen-lockfile
+    - name: Build the app
+      run: pnpm build --if-present
     - name: Debugging: Check working directory and pnpm version
       run: |
         echo "Current working directory: $(pwd)"
-        ls -la  # Cek apakah semua file ada di folder
-        pnpm --version  # Cek versi pnpm yang terinstall
+        ls -la  # Cek file dan folder
+        pnpm --version  # Verifikasi pnpm sudah terinstall
     - name: Run dev command
       run: |
         echo "Running pnpm dev..."
-        pnpm dev  # Nge-run dev server
+        pnpm dev  # Jalankan dev server
