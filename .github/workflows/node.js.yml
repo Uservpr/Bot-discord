@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
@@ -22,7 +21,14 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
-        cache: 'pnpm'  # Mengganti cache dari npm ke pnpm
-    - run: pnpm install --frozen-lockfile  # Ganti npm ci ke pnpm install
-    - run: pnpm run build --if-present     # Ganti npm run build ke pnpm run build
-    - run: pnpm test                      # Ganti npm test ke pnpm test
+        cache: 'pnpm'
+    - name: Cache pnpm modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.pnpm-store
+        key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-pnpm-
+    - run: pnpm install --frozen-lockfile
+    - run: pnpm build --if-present
+    - run: pnpm test
