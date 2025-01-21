@@ -1,51 +1,35 @@
-name: Node.js CI
+name: Deploy Discord Bot
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install dependencies with npm
-      run: npm ci
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
 
-    - name: Build project (if present)
-      run: npm run build --if-present
+      - name: Install pnpm
+        run: npm install -g pnpm
 
-    - name: Run tests
-      run: npm test
+      - name: Install dependencies
+        run: pnpm install
 
-    - name: Setup pnpm
-      uses: pnpm/action-setup@v4.0.0
-      with:
-        # Version of pnpm to install
-        version: '7.x' # Atur versi pnpm yang diinginkan, bisa ganti sesuai keinginan
-        # File path to the package.json to read "packageManager" configuration
-        package_json_file: 'package.json'
+      - name: Build project
+        run: pnpm build --if-present
 
-    - name: Install dependencies with pnpm
-      run: pnpm install --frozen-lockfile
-
-    - name: Build with pnpm
-      run: pnpm run build --if-present
-
-    - name: Run dev command with pnpm
-      run: pnpm run dev
+      - name: Start bot
+        env:
+          DISCORD_BOT_TOKEN: ${{ secrets.DISCORD_BOT_TOKEN }}
+        run: |
+          echo "DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}" > .env
+          pnpm start
